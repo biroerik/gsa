@@ -24,7 +24,13 @@ module.exports = cds.service.impl(async function () {
 
   // AFTER event: Send notification email
   this.after("CREATE", Spacefarers, async (data, req) => {
-    const emailService = await cds.connect.to("email-service"); // Assuming an external email service
+    const emailService = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
+      },
+    });
 
     const message = {
       to: data.email,
@@ -35,10 +41,17 @@ module.exports = cds.service.impl(async function () {
     };
 
     try {
-      await emailService.sendEmail(message);
+      await emailService.sendMail(message);
       console.log(`📧 Cosmic notification sent to ${data.email}`);
     } catch (error) {
       console.error("⚠️ Failed to send cosmic notification:", error);
+    }
+  });
+
+  this.before("READ", "Spacefarers", async (req) => {
+    const user = req.user;
+    if (user.attr?.planet) {
+      req.query.where(`originPlanet = '${user.attr.planet}'`);
     }
   });
 });
