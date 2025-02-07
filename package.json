@@ -20,6 +20,17 @@
   },
   "cds": {
     "requires": {
+      "auth": {
+        "kind": "basic",
+        "users": {
+          "user1": {
+            "password": "pass123",
+            "attr": {
+              "originPlanet": "Earth"
+            }
+          }
+        }
+      },
       "db": {
         "kind": "sqlite",
         "credentials": {
