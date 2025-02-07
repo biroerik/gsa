@@ -29,3 +29,9 @@ entity Positions {
         spacefarers  : Association to many Spacefarers
                            on spacefarers.position = $self;
 }
+
+extend entity Spacefarers with @restrict: [{
+    grant: 'READ',
+    to   : 'authenticated-user',
+    where: 'originPlanet = $user.originPlanet' // Grant access only when spacefarer.originPlanet is equal to user.originPlanet
+}];

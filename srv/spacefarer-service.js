@@ -43,13 +43,6 @@ module.exports = cds.service.impl(async function () {
     }
   });
 
-  this.before("READ", Spacefarers, async (req) => {
-    const user = req.user;
-    if (user.originPlanet) {
-      req.query.where(`originPlanet = '${user.originPlanet}'`);
-    }
-  });
-
   this.on("UpdateStardust", async (req) => {
     const { spacefarerID, newStardust } = req.data;
     // Validate input
