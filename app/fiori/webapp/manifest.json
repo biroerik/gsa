@@ -101,6 +101,7 @@
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
+              "editableHeaderContent": true,
               "contextPath": "/Spacefarers",
               "variantManagement": "Page",
               "navigation": {

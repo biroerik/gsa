@@ -84,6 +84,23 @@ annotate service.Spacefarers with @(
             Label : 'originPlanet',
             Value : originPlanet,
         },
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'AdminService.EntityContainer/CreateSpacefarer',
+            Label : 'CreateSpacefarer',
+        },
+    ],
+    UI.Identification : [
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'AdminService.EntityContainer/UpdateStardust',
+            Label : 'UpdateStardust',
+        },
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'AdminService.EntityContainer/CangeSpaceSuitColor',
+            Label : 'CangeSpaceSuitColor',
+        },
     ],
 );
 
