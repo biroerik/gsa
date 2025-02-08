@@ -75,7 +75,7 @@ class SpacefarerService extends cds.ApplicationService {
 
       // Update the spacefarer's suit color
       const result = await UPDATE(Spacefarers)
-        .set({ spacesuitcolor: newColor })
+        .set({ spacesuitColor: newColor })
         .where({ ID: spacefarerID });
       // Check if update was successful
       if (result === 0) {
