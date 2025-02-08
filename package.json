@@ -16,7 +16,8 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-fiori": "cds watch --open fiori/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-fiori": "cds watch --open fiori/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-project1": "cds watch --open project1/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
@@ -40,6 +41,8 @@
     }
   },
   "sapux": [
+    "app/fiori",
+    "app/project1",
     "app/fiori"
   ]
 }

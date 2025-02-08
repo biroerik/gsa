@@ -1,4 +1,4 @@
-using AdminService as service from '../../srv/admin-service';
+using SpacefarerService as service from '../../srv/spacefarer-service';
 annotate service.Spacefarers with @(
     UI.FieldGroup #GeneratedGroup : {
         $Type : 'UI.FieldGroupType',
@@ -40,13 +40,13 @@ annotate service.Spacefarers with @(
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'department_ID',
-                Value : department_ID,
+                Label : 'department',
+                Value : department,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'position_ID',
-                Value : position_ID,
+                Label : 'position',
+                Value : position,
             },
         ],
     },
@@ -84,67 +84,18 @@ annotate service.Spacefarers with @(
             Label : 'originPlanet',
             Value : originPlanet,
         },
-        {
-            $Type : 'UI.DataFieldForAction',
-            Action : 'AdminService.EntityContainer/CreateSpacefarer',
-            Label : 'CreateSpacefarer',
-        },
     ],
     UI.Identification : [
         {
             $Type : 'UI.DataFieldForAction',
-            Action : 'AdminService.EntityContainer/UpdateStardust',
+            Action : 'SpacefarerService.EntityContainer/UpdateStardust',
             Label : 'UpdateStardust',
         },
         {
             $Type : 'UI.DataFieldForAction',
-            Action : 'AdminService.EntityContainer/CangeSpaceSuitColor',
-            Label : 'CangeSpaceSuitColor',
+            Action : 'SpacefarerService.EntityContainer/ChangeSpaceSuitColor',
+            Label : 'ChangeSpaceSuitColor',
         },
     ],
 );
-
-annotate service.Spacefarers with {
-    department @Common.ValueList : {
-        $Type : 'Common.ValueListType',
-        CollectionPath : 'Departments',
-        Parameters : [
-            {
-                $Type : 'Common.ValueListParameterInOut',
-                LocalDataProperty : department_ID,
-                ValueListProperty : 'ID',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'name',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'description',
-            },
-        ],
-    }
-};
-
-annotate service.Spacefarers with {
-    position @Common.ValueList : {
-        $Type : 'Common.ValueListType',
-        CollectionPath : 'Positions',
-        Parameters : [
-            {
-                $Type : 'Common.ValueListParameterInOut',
-                LocalDataProperty : position_ID,
-                ValueListProperty : 'ID',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'title',
-            },
-            {
-                $Type : 'Common.ValueListParameterDisplayOnly',
-                ValueListProperty : 'requirements',
-            },
-        ],
-    }
-};
 

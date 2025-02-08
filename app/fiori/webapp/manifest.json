@@ -13,11 +13,11 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
       "version": "1.16.3",
-      "toolsId": "b8199431-460c-4b09-b062-72ec5046b871"
+      "toolsId": "ce785bdf-27d7-48ed-b944-1fe5d009524d"
     },
     "dataSources": {
       "mainService": {
-        "uri": "/odata/v4/admin/",
+        "uri": "/browse/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -101,7 +101,6 @@
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "editableHeaderContent": true,
               "contextPath": "/Spacefarers",
               "variantManagement": "Page",
               "navigation": {

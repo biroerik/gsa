@@ -70,8 +70,7 @@ class SpacefarerService extends cds.ApplicationService {
     });
 
     // Handler for ChangeSpaceSuitColor action
-    this.on("CangeSpaceSuitColor", async (req) => {
-      console.log("🎨 Changing space suit color...");
+    this.on("ChangeSpaceSuitColor", async (req) => {
       const { spacefarerID, newColor } = req.data;
 
       // Update the spacefarer's suit color
