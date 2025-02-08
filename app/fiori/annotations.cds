@@ -84,6 +84,11 @@ annotate service.Spacefarers with @(
             Label : 'originPlanet',
             Value : originPlanet,
         },
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'SpacefarerService.EntityContainer/CreateSpacefarer',
+            Label : 'CreateSpacefarer',
+        },
     ],
     UI.Identification : [
         {

@@ -1,5 +1,13 @@
 const cds = require("@sap/cds");
 const nodemailer = require("nodemailer");
+
+const emailService = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+});
 class SpacefarerService extends cds.ApplicationService {
   async init() {
     const db = await cds.connect.to("db");
@@ -7,33 +15,22 @@ class SpacefarerService extends cds.ApplicationService {
 
     // BEFORE event: Validate & Enhance Spacefarer Skills
     this.before("CREATE", Spacefarers, async (req) => {
-      const { stardustCollection, wormholeNavigation, ID, name } = req.data;
+      const { stardust, wormholeSkill, name } = req.data;
       // Validate input values
-      if (stardustCollection < 0) {
+      if (stardust < 0) {
         req.error(400, "Stardust collection cannot be negative.");
       }
-      if (wormholeNavigation < 0 || wormholeNavigation > 1000) {
+      if (wormholeSkill < 0 || wormholeSkill > 1000) {
         req.error(400, "Wormhole Navigation skill must be between 0 and 1000.");
       }
       // Enhance new spacefarer skills (Bonus Stardust!)
-      await UPDATE(Spacefarers)
-        .with({
-          stardust: stardustCollection + 10,
-          wormholeSkill: wormholeNavigation + 10,
-        })
-        .where({ ID: ID });
+      req.data.stardust += 10;
+      req.data.wormholeSkill += 10;
       console.log(`🚀 Preparing ${name} for space adventure!`);
     });
 
     // AFTER event: Send notification email
     this.after("CREATE", Spacefarers, async (data, req) => {
-      const emailService = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.EMAIL,
-          pass: process.env.PASSWORD,
-        },
-      });
       const message = {
         to: data.email,
         subject: `Welcome to the Galactic Adventure, ${data.name}!`,
