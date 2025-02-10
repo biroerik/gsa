@@ -29,65 +29,54 @@ class SpacefarerService extends cds.ApplicationService {
     const db = await cds.connect.to("db");
     const { Spacefarers } = db.entities;
 
-    // BEFORE event: Validate & Enhance Spacefarer Skills
     this.before("CREATE", Spacefarers, async (req) => {
       const { stardust, wormholeSkill, name } = req.data;
-      // Validate input values
       if (stardust < 0) {
         req.error(400, "Stardust collection cannot be negative.");
       }
       if (wormholeSkill < 0 || wormholeSkill > 1000) {
         req.error(400, "Wormhole Navigation skill must be between 0 and 1000.");
       }
-      // Enhance new spacefarer skills (Bonus Stardust!)
       req.data.stardust += 10;
       req.data.wormholeSkill += 10;
       console.log(`🚀 Preparing ${name} for space adventure!`);
     });
 
-    // AFTER event: Send notification email
     this.after("CREATE", Spacefarers, async (data, req) => {
       await sendEmail(data);
     });
 
     this.on("UpdateStardust", async (req) => {
       const { spacefarerID, newStardust } = req.data;
-      // Validate input
       if (newStardust < 0) {
         return req.error(400, "Stardust cannot be negative");
       }
-      // Update the spacefarer's stardust
       const result = await UPDATE(Spacefarers)
         .set({ stardust: newStardust })
         .where({ ID: spacefarerID });
-      // Check if update was successful
-      if (result === 0) {
+      if (!result) {
         return req.error(404, `Spacefarer with ID ${spacefarerID} not found`);
       }
-      // Return success message
       return {
         message: `Updated stardust to ${newStardust} for spacefarer ${spacefarerID}`,
       };
     });
 
-    // Handler for ChangeSpaceSuitColor action
     this.on("ChangeSpaceSuitColor", async (req) => {
       const { spacefarerID, newColor } = req.data;
 
-      // Update the spacefarer's suit color
       const result = await UPDATE(Spacefarers)
         .set({ spacesuitColor: newColor })
         .where({ ID: spacefarerID });
-      // Check if update was successful
-      if (result === 0) {
+      if (!result) {
         return req.error(404, `Spacefarer with ID ${spacefarerID} not found`);
       }
-      // Return success message
       return {
         message: `Updated space suit color to ${newColor} for spacefarer ${spacefarerID}`,
       };
     });
     this.on("CreateSpacefarer", async (req) => {
+      // i not managed to use the default CREATE function so thats why i did this and also added in the before and after event because those not thrigger on this
       const {
         name,
         stardust,
