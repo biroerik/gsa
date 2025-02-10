@@ -8,6 +8,22 @@ const emailService = nodemailer.createTransport({
     pass: process.env.PASSWORD,
   },
 });
+const sendEmail = async (data) => {
+  const message = {
+    to: data.email,
+    subject: `Welcome to the Galactic Adventure, ${data.name}!`,
+    text: `Dear ${data.name},\n\nCongratulations on embarking on your cosmic journey!
+        You now have ${data.stardust} stardust and a Wormhole Navigation skill of ${data.wormholeSkill}.
+        Best of luck exploring the SAP galaxy! 🚀✨\n\n- Galactic Command`,
+  };
+  try {
+    await emailService.sendMail(message);
+    console.log(`📧 Cosmic notification sent to ${data.email}`);
+  } catch (error) {
+    console.error("⚠️ Failed to send cosmic notification:", error);
+  }
+};
+
 class SpacefarerService extends cds.ApplicationService {
   async init() {
     const db = await cds.connect.to("db");
@@ -31,19 +47,7 @@ class SpacefarerService extends cds.ApplicationService {
 
     // AFTER event: Send notification email
     this.after("CREATE", Spacefarers, async (data, req) => {
-      const message = {
-        to: data.email,
-        subject: `Welcome to the Galactic Adventure, ${data.name}!`,
-        text: `Dear ${data.name},\n\nCongratulations on embarking on your cosmic journey!
-            You now have ${data.stardust} stardust and a Wormhole Navigation skill of ${data.wormholeSkill}.
-            Best of luck exploring the SAP galaxy! 🚀✨\n\n- Galactic Command`,
-      };
-      try {
-        await emailService.sendMail(message);
-        console.log(`📧 Cosmic notification sent to ${data.email}`);
-      } catch (error) {
-        console.error("⚠️ Failed to send cosmic notification:", error);
-      }
+      await sendEmail(data);
     });
 
     this.on("UpdateStardust", async (req) => {
@@ -97,17 +101,18 @@ class SpacefarerService extends cds.ApplicationService {
 
       const newSpacefarer = await INSERT.into(Spacefarers).entries({
         name,
-        stardust,
-        wormholeSkill,
+        stardust: stardust + 10,
+        wormholeSkill: wormholeSkill + 10,
         originPlanet,
         spacesuitColor,
         email,
         department_ID,
         position_ID,
       });
-
+      await sendEmail(newSpacefarer);
       return newSpacefarer;
     });
+
     return super.init();
   }
 }
